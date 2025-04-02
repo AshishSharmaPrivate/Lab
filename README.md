@@ -1,2 +1,2 @@
 # Lab
-All handon lab for SRE
+All hands-on lab for SRE
