@@ -1,9 +1,10 @@
 Infrastructure Monitoring using Prometheus and Grafana on AWS
 
-
 Follow below steps to implement the micro service observability tech stack.
 
-
+Set up a Sample Microservices Application(Deploy a demo app with multiple services (e.g., Banking App with balance-service, payment-service)
+Enable Logging (Structured + Centralized)(NodeExporter + Prom + Grafana.)
+Collect Metrics (Install Prometheus to scrape service metrics (expose /metrics endpoint with libraries like prometheus-client).)
 
 
 Prerequisites
@@ -13,9 +14,10 @@ User account with sudo  privilege.
 Prometheus system user and group.
 Sufficient storage on your system and good internet connectivity.
 
- 
+...............................................
 
 Lets start with the exercise.  
+
 Set Up EC2 Instance in AWS Console (Navigate to ec2)
 Click > Launch Instance > Provide Name > Select Ubuntu Image > Instance Type (t2.micro) > Create Key Pair > Create Security Group (Allow SSH Traffic) > Launch Instance   Ensure your EC2 instance is up and running:  Launch an EC2 Instance (Ubuntu).  Open Inbound Ports:
 SSH (22)
@@ -29,6 +31,7 @@ SSH to system:
 chmod 400 SRE_Demo.pem
 ssh -i "sre_demo1.pem" ubuntu@ec2-<public-ip>.us-east-2.compute.amazonaws.com
 
+................................................
 
 We will update the system repository index by using the following command.
 
@@ -82,6 +85,8 @@ Step #4:Creating Prometheus Systemd file
 Create the service file using below command:
 sudo vi /etc/systemd/system/prometheus.service
 
+...........................................;
+
 [Unit]
 Description=Prometheus
 Wants=network-online.target
@@ -99,6 +104,8 @@ ExecStart=/usr/local/bin/prometheus \
 
 [Install]
 WantedBy=multi-user.target
+
+.............................................
 
 Now, Reload systemd:
 sudo systemctl daemon-reload
@@ -138,6 +145,8 @@ Step #7:Creating Node Exporter Systemd service
 Create a node_exporter service file in the /etc/systemd/system directory
 sudo vi /etc/systemd/system/node_exporter.service
 
+..............................................
+
 [Unit]
 
 Description=Node Exporter
@@ -160,7 +169,7 @@ ExecStart=/usr/local/bin/node_exporter
 
 WantedBy=multi-user.target
 
-
+.................................................
 
 Now lets start and enable the node_exporter service using below commands
 sudo systemctl daemon-reload
@@ -175,7 +184,7 @@ Step #8:Configure the Node Exporter as a Prometheus target
 So go to etc/prometheus and open prometheus.yml
 sudo vi /etc/prometheus/prometheus.yml
 
-
+..................................................
 
 - job_name: 'Node_Exporter'
 
@@ -185,6 +194,7 @@ sudo vi /etc/prometheus/prometheus.yml
 
       - targets:[‘<Server_IP_of_Node_Exporter_Machine>:9100']
 
+...................................................
 
 Now restart the Prometheus Service
 sudo systemctl restart prometheus
@@ -263,6 +273,8 @@ Create a file named server.js:
 
 sudo vi server.js
 
+............................................................
+
 const express = require("express");
 const client = require("prom-client");
 const cors = require("cors");
@@ -319,6 +331,8 @@ app.listen(8001, () => {
   console.log("Server running on port 8001");
 });
 
+
+..........................................................
 
 Step 3: Run the Application
 
