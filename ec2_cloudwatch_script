@@ -2,6 +2,8 @@
 
 Pre Requisit : Terraform and AWS CLI
 
+Create main.tf file and add below script.
+
 
 ................................
 
