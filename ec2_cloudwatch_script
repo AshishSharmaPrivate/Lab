@@ -3,6 +3,7 @@
 Pre Requisit : Terraform and AWS CLI
 
 Connect you Local system to AWS account provind access and secreate access key from your AWS account.
+IAM > User > create access key
 
 ............................
 
