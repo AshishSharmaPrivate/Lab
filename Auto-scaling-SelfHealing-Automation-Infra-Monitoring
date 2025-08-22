@@ -8,7 +8,7 @@ Deploy an auto-scaling web server cluster using Terraform.
 Use AWS CloudWatch to monitor unhealthy instances.
 Use AWS Auto Scaling to replace unhealthy instances automatically.
 Simulate traffic spikes using Locust.
-Implement AWS Lambda to handle automated recovery.
+Additonally you can - Implement AWS Lambda to handle automated recovery (Demo purpose).
 
 
 > Create a new project folder for Terraform:
@@ -91,11 +91,11 @@ Configure Monitoring with CloudWatch
 Deploy Lambda Using Terraform
 Configure CloudWatch to Trigger Lambda
 
-Scenario: Unhealthy Instance Detected and Self-Healing Mechanism
+Scenario 1 : Unhealthy Instance Detected and Self-Healing Mechanism using Autoscaling group
 If an EC2 instance fails, Auto Scaling Group will replace it.
-CloudWatch can trigger an AWS Lambda function to restart the instance.
 
-Before creating a main.tf file lets create lambda function inside self-healing-terraform folder.
+Scenario 2:
+CloudWatch can trigger an AWS Lambda function to restart the new instance.
 
 mkdir lambda
 cd lambda
@@ -103,7 +103,7 @@ cd lambda
 touch lambda_function.py
 vi lambda_function.py
 
-Add below configuration and save it
+Add below configuration and save it (sample format how lamda function can be created)
 
 
 ..................
@@ -142,6 +142,8 @@ def lambda_handler(event, context):
 ## Zip Lambda Function using below command
 
 zip lambda_function.zip lambda_function.py
+
+.....................................................
 
 
 >> Now, lets create terraform file 
@@ -386,11 +388,9 @@ Congratulation >>>>>>>> You have Successfully implemented a Automated self-heali
 
 AWS Auto Scaling to automatically replace unhealthy instances.
 AWS CloudWatch to monitor CPU & health metrics.
-AWS Lambda to trigger automated recovery actions.
 Locust to simulate traffic
 
-
-
+AWS Lambda to trigger automated recovery actions if integrated in main.tf.
 
 
 
