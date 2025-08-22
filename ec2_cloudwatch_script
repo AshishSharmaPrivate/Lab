@@ -2,8 +2,18 @@
 
 Pre Requisit : Terraform and AWS CLI
 
+Connect you Local system to AWS account provind access and secreate access key from your AWS account.
+
+............................
+
+create folder :
+
+mkdir ec2_monitoring
+cd ec2_monitoring
+
 Create main.tf file and add below script.
 
+sudo vi main.tf
 
 ................................
 
