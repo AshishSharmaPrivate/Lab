@@ -183,6 +183,7 @@ sudo apt --fix-broken install -y
 The /etc/default/xray file is the configuration file for the AWS X-Ray Daemon.It allows you to set environment variables to control how the daemon runs.
 
 sudo vi /etc/default/xray
+
 ……………………………..............................................................................
 
 # AWS X-Ray Daemon Configuration
@@ -201,6 +202,8 @@ XRAY_DAEMON_PROXY_MODE=false
 
 # Additional configuration options (leave as default unless needed)
 XRAY_DAEMON_NO_TRACE_ID=false
+
+..................................................................................................
 
 
 Explanation of Each Setting:
