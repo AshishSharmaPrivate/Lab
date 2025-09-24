@@ -5,6 +5,12 @@ Pre Requisit : Terraform and AWS CLI
 Connect you Local system to AWS account provind access and secreate access key from your AWS account.
 IAM > User > create access key and copy those key in your system using aws configure.
 
+Than, in your base machine configure 
+
+aws configure 
+
+and add required information like secret key, accekey id, region and format
+
 ............................
 
 create folder :
