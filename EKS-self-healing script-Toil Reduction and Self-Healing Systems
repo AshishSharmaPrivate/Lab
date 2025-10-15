@@ -534,6 +534,7 @@ kubectl top pods
 >>>>>>> Create HPA for Scaling Pods
 
 kubectl autoscale deployment self-healing-app --cpu-percent=50 --min=1 —max=3
+(if you see --cpu-percent is deprecated than, use --cpu=50%)
 
 This scales pods from 1 to 3 when CPU exceeds 50% usage.
 
