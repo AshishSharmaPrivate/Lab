@@ -5,11 +5,11 @@ Performance Monitoring (APM) on AWS for backend profiling, monitoring response t
 
 Here’s a detailed step-by-step guide to setting up Application Performance Monitoring (APM) on AWS, including creating an EC2 instance using Terraform and enabling necessary services.
 
-🔹 Phase 1: Set Up Infrastructure Using Terraform
+Phase 1: Set Up Infrastructure Using Terraform
 
 We will use Terraform to provision an EC2 instance with the required IAM roles, security groups, and monitoring tools.
 
-✅ Step 1: Install Terraform & AWS CLI (if not installed) 
+Step 1: Install Terraform & AWS CLI (if not installed) 
 sudo apt update && sudo apt upgrade -y
 
 Install Terraform
@@ -29,7 +29,7 @@ Default Region (e.g., us-east-1)
 
 
 
-✅ Step 2: Create Terraform Configuration for EC2
+Step 2: Create Terraform Configuration for EC2
 Create a directory and files:
 
 mkdir terraform-apm
@@ -153,7 +153,7 @@ terraform output ec2_public_ip
 
 
 
-✅ Step 4: Install & Configure APM Tools
+Step 4: Install & Configure APM Tools
 Now that we have an EC2 instance (check in aws console > instance) , we now install AWS X-Ray, CloudWatch Agent, and deploy a sample backend application (Node.js).
 
 Login into instance : SSH into EC2 Instance
@@ -161,7 +161,7 @@ chmod 400 “<pem file>"
 ssh -i your-key.pem ec2-user@<EC2_PUBLIC_IP>
 
 
-✅ Step 5: Download and Install AWS X-Ray Daemon
+Step 5: Download and Install AWS X-Ray Daemon
 Run the following commands to install the X-Ray daemon.  To install the AWS X-Ray Daemon on an Ubuntu system, follow these steps:
 
 Update Your System
@@ -243,7 +243,7 @@ sudo journalctl -u xray --no-pager | tail -20
 
 
 
-✅ Step 6: Install & Configure CloudWatch Agent
+Step 6: Install & Configure CloudWatch Agent
 Install CloudWatch Agent
 
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
@@ -290,7 +290,7 @@ sudo systemctl start amazon-cloudwatch-agent
 sudo systemctl enable amazon-cloudwatch-agent
 sudo systemctl status amazon-cloudwatch-agent
 
-✅ Step 7: Deploy Sample Backend App
+Step 7: Deploy Sample Backend App
 
 Install Node.js:
 
@@ -354,7 +354,7 @@ node server.js
 
 
 
-✅ Step 8: Verify in AWS Console
+Step 8: Verify in AWS Console
 Go to AWS X-Ray → Check Traces
 Go to CloudWatch → Metrics
 Create Dashboards & Alerts for High Latency or Errors
@@ -371,11 +371,11 @@ Create Dashboards & Alerts for High Latency or Errors
 …………………………………………
 Concept behind above Implementation: 
 
-✅ Enable AWS X-Ray for APM tracing requests. 
-✅ Install and configure CloudWatch Agent for application logs & server metrics. 
-✅ Use CloudWatch Application Insights for backend performance monitoring. 
-✅ Correlate APM data with CPU & memory to find performance bottlenecks. 
-✅ Set up CloudWatch Alarms for real-time issue detection.
+ Enable AWS X-Ray for APM tracing requests. 
+ Install and configure CloudWatch Agent for application logs & server metrics. 
+ Use CloudWatch Application Insights for backend performance monitoring. 
+ Correlate APM data with CPU & memory to find performance bottlenecks. 
+ Set up CloudWatch Alarms for real-time issue detection.
 
 This setup provides end-to-end Application Performance Monitoring (APM) on AWS with tracing, logging, and alerting.
 
@@ -417,11 +417,11 @@ Install CloudWatch Agent for system metrics like CPU and memory.
 Correlate application performance with server metrics using CloudWatch Dashboards.
 
 
-✅ Terraform: Created EC2 with IAM roles & security groups 
-✅ X-Ray: Enabled distributed tracing 
-✅ CloudWatch Agent: Configured for CPU, memory, and logs
-✅ Backend App: Deployed with APM monitoring 
-✅ AWS Console: Verified metrics & logs
+ Terraform: Created EC2 with IAM roles & security groups 
+ X-Ray: Enabled distributed tracing 
+ CloudWatch Agent: Configured for CPU, memory, and logs
+ Backend App: Deployed with APM monitoring 
+ AWS Console: Verified metrics & logs
 
 
 
