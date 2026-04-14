@@ -312,7 +312,11 @@ sudo systemctl restart/start logstash
 sudo systemctl status logstash 
 
  
+sudo systemctl enable filebeat 
 
+sudo systemctl restart/start filebeat 
+
+sudo systemctl status filebeat 
  
 
  
