@@ -93,10 +93,6 @@ If an EC2 instance fails, Auto Scaling Group will replace it.
 mkdir self-healing-terraform # folder name depends on you
 cd self-healing-terraform
 
-cd .. # into /self-healing-terraform/
-
-touch main.tf
-
 vi main.tf
 
 Add below config and save it.
