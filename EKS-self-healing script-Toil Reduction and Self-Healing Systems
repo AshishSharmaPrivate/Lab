@@ -45,7 +45,7 @@ eksctl version
 
 Step > create new folder where we will save all config file.  
 
-mkdir self-healing-script && cd self-healing-script
+mkdir self-healing-script and cd self-healing-script
 
 sudo vi main.tf (copy below config to main.tf and save)   
 
