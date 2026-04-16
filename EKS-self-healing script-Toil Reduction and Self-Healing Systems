@@ -7,11 +7,6 @@ Goal:
 
 Deploy an EKS cluster with self-healing features using Kubernetes liveness and readiness probes.
 If a pod crashes, Kubernetes automatically restarts it.
-If a node becomes unhealthy, EKS replaces it automatically using Auto Scaling Groups (ASG).
-
-
-Make sure you have connected from your local system to aws account using aws configure command and provide access key if and secret key.   
-(navigate to IAM > user > create new access key) and paste it in Vi ~/.aws/credentials.  
 
 
 Install Below Required Tools :
@@ -39,7 +34,6 @@ sudo mv kubectl /usr/local/bin/
 kubectl version --client
 
 
-
 # Install eksctl (Optional)
 curl -sSL "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz" | tar -xz
 sudo mv eksctl /usr/local/bin/
@@ -47,12 +41,11 @@ eksctl version
 
 
 
->>>>>>> Step to follow:   
+>>>>>>> Steps to follow:   
 
-Step 1 > Make sure you have connected using AWS Access KEY from your Local Machine to AWS Account.
-Step2 > create new folder where we will save all config file.  
+Step > create new folder where we will save all config file.  
 
-mkdir self-healing-script cd self-healing-script
+mkdir self-healing-script && cd self-healing-script
 
 sudo vi main.tf (copy below config to main.tf and save)   
 
@@ -62,7 +55,7 @@ provider "aws" {
   region = "us-east-2"  # Change to your AWS region
 }
 
-# 🔹 Create VPC for EKS
+#  Create VPC for EKS
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   name   = "eks-vpc"
@@ -73,7 +66,7 @@ module "vpc" {
   enable_nat_gateway = true
 }
 
-# 🔹 Create IAM Role for EKS
+#  Create IAM Role for EKS
 resource "aws_iam_role" "eks_role" {
   name = "eks-cluster-role"
 
@@ -109,7 +102,7 @@ resource "aws_iam_role_policy_attachment" "eks_ec2_policy" {
 }
 
 
-# 🔹 Create EKS Cluster
+#  Create EKS Cluster
 resource "aws_eks_cluster" "eks" {
   name     = "self-healing-eks"
   role_arn = aws_iam_role.eks_role.arn
@@ -118,7 +111,7 @@ resource "aws_eks_cluster" "eks" {
   }
 }
 
-# 🔹 Create Node Group (Auto Scaling)
+# Create Node Group (Auto Scaling)
 resource "aws_eks_node_group" "self_healing_nodes" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "self-healing-node-group"
@@ -153,7 +146,8 @@ kubectl get nodes
 
 
 >>>>>> Deploy a Self-Healing Kubernetes Application:  We will now deploy an application with liveness and readiness probes to enable self-healing.
-Create a Deployment File (self-healing-app.yaml) and add below configuration.
+
+Create a Deployment File (vi self-healing-app.yaml) and add below configuration.
 
 
 ........................................
@@ -215,10 +209,9 @@ Manually Kill a Pod
 
 kubectl delete pod <POD_NAME>
 
-✅ Kubernetes will automatically restart the pod.
+### Kubernetes will automatically restart the pod.
 
 kubectl get pods -w 
-
 
 You can run below command to get all cluster and deployment details.
 
@@ -229,22 +222,21 @@ Get All Kubernetes Resources in the Cluster >>>>> kubectl get all —all-namespa
 
 NOTE: to progress with task 2 Don't destroy the infrastructure.
 
+ELSE 
+
 >>>>>>>>>> Destroy the infrastructure you have created.  
 
-terraform-destroy-auto-approve
+terraform destroy auto-approve
 
 .........................
 
 >>>>>>>>> Summary <<<<<<<<<<<<
 
-Terraform-based EKS setup with Auto Scaling
-Kubernetes liveness & readiness probes for pod self-healing
-Node replacement using Auto Scaling when failures occur
+Terraform-based EKS setup.
+Kubernetes liveness & readiness probes for pod self-healing.
 
 ..........................
 
-
-Continue with Task 2 please keep progress with Task 1 
 
 
 >>>>>>>>>>>>>>> Task 2 - Automate Scaling of EKS Nodes Using Prometheus Alerting Rules & Kubernetes HPA <<<<<<<<<<<<<<<<< 
@@ -263,6 +255,7 @@ KEDA watches Prometheus metrics like container_cpu_usage_seconds_total.
 If CPU usage exceeds 50%, KEDA triggers scaling up.
 When CPU drops, it automatically scales down.
 
+............................................................
 
 >>>>>> Install Helm on Your System: For Ubuntu/Linux using below command
 
@@ -284,8 +277,11 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 
 helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+
+
 #This should install Prometheus, Alertmanager
 
+................................................
 
 >>>>>>>>> NOTE: only if, 
 
@@ -298,7 +294,7 @@ If anything still exists, force delete it:
 
 kubectl delete all --all -n monitoring
 kubectl delete crds --selector=app.kubernetes.io/name=prometheus-operator
-
+..................................................
 
 >>>>>>>>>> Once installation completes, verify everything:
 
@@ -445,14 +441,17 @@ data:
 
 
 This sends alerts to KEDA to trigger auto-scaling.
-Apply the ConfigMap
+
+Apply the Config
 
 kubectl apply -f alertmanager-config.yaml
 
 >>>>>>> Create Alerting Rule for Pod Failures
 
 Now, create a rule for detecting pod crashes.
-Create ---------- sudo vi pod-failure-alert.yaml -------- and save the below config.
+
+Create ---------- 
+sudo vi pod-failure-alert.yaml -------- and save the below config.
 
 ................................
 
@@ -539,6 +538,7 @@ kubectl autoscale deployment self-healing-app --cpu-percent=50 --min=1 —max=3
 This scales pods from 1 to 3 when CPU exceeds 50% usage.
 
 >>>>>>>> Now, Deploy KEDA for Event-Based Scaling
+
 KEDA allows scaling based on Prometheus alerts.
 
 Create a ScaledObject for Scaling Nodes
@@ -615,7 +615,7 @@ kubectl port-forward -n monitoring prometheus-prometheus-kube-prometheus-prometh
 http://127.0.0.1:9090/alerts open in browser
 
 
-👉 Status → Alerts (Check if any alerts are firing)
+Status → Alerts (Check if any alerts are firing)
 OR
 Step 2: Simulate Pod Failure
 
@@ -656,11 +656,11 @@ KEDA (Kubernetes Event-Driven Autoscaling) (for event-based scaling)
 
 One, lab is completed - Make sure you destroy the infrastructure you have created.  
 
-terraform-destroy-auto-approve
+terraform destroy --auto-approve
 
 ………………………………………
 
-🎯 Key Differences: HPA vs KEDA
+Key Differences: HPA vs KEDA
 
 
 
