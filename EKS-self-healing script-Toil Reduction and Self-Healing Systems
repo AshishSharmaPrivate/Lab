@@ -666,3 +666,61 @@ Key Differences: HPA vs KEDA
 
 We have integrated both in our lab for use case scenario.
 
+
+..............................
+
+Monitoring : 
+
+Step 1: Create IAM Policy for CloudWatch Agent
+
+Add this to your Terraform:
+
+resource "aws_iam_policy" "cloudwatch_agent_policy" {
+  name = "CloudWatchAgentPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:PutLogEvents",
+          "logs:CreateLogStream",
+          "logs:CreateLogGroup",
+          "logs:DescribeLogStreams",
+          "cloudwatch:PutMetricData",
+          "ec2:DescribeInstances",
+          "ec2:DescribeTags"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+Step 2: Attach to Node Role
+resource "aws_iam_role_policy_attachment" "cw_attach" {
+  role       = aws_iam_role.node_role.name
+  policy_arn = aws_iam_policy.cloudwatch_agent_policy.arn
+}
+Step 3: Deploy Container Insights (kubectl)
+
+Now apply AWS-provided manifest:
+
+kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluent-bit-quickstart.yaml
+Step 4: Verify pods
+kubectl get pods -n amazon-cloudwatch
+
+You should see:
+
+cloudwatch-agent
+fluent-bit
+Where to see metrics in AWS Console
+
+Go to:
+
+Amazon CloudWatch → Insights → Container Insights
+
+Then select:
+
+Cluster: self-healing-eks
+
