@@ -45,4 +45,119 @@ Run the script:
 
 python3 fetch_logs.py
 
+............................................
+
+
+LAB 2:  
+
+
+Built automated EC2 health diagnostics Report using Python + SAR  
+
+
+### What this script will do 
+
+The Python script will: >>> 
+
+Install sysstat (SAR tool)  
+
+Enable SAR service  
+
+Collect CPU, Memory, Disk, Load metrics  
+
+Save report into a file  
+
+Timestamp the report 
+
+ 
+
+ 
+Step 1 — Create script 
+ 
+
+vi ec2_diagnostic.py 
+ 
+........................................... 
+ 
+import os 
+
+import datetime 
+
+  
+
+print("Starting EC2 Diagnostic Collection...") 
+
+  
+
+timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M") 
+
+report_file = f"ec2_diagnostic_{timestamp}.txt" 
+
+  
+
+def run(cmd): 
+
+    return os.popen(cmd).read() 
+
+  
+
+with open(report_file, "w") as f: 
+
+  
+
+    f.write("========== EC2 DIAGNOSTIC REPORT ==========\n") 
+
+    f.write(f"Generated at: {timestamp}\n\n") 
+
+  
+
+    f.write("===== SYSTEM INFO =====\n") 
+
+    f.write(run("uname -a")) 
+
+    f.write(run("uptime")) 
+
+  
+
+    f.write("\n===== CPU USAGE =====\n") 
+
+    f.write(run("sar -u 1 3")) 
+
+  
+
+    f.write("\n===== MEMORY USAGE =====\n") 
+
+    f.write(run("sar -r 1 3")) 
+
+  
+
+    f.write("\n===== DISK USAGE =====\n") 
+
+    f.write(run("df -h")) 
+
+  
+
+    f.write("\n===== LOAD AVERAGE =====\n") 
+
+    f.write(run("sar -q 1 3")) 
+
+  
+
+    f.write("\n===== TOP PROCESSES =====\n") 
+
+    f.write(run("ps aux --sort=-%mem | head")) 
+
+  
+
+    f.write("\n===== DISK IO =====\n") 
+
+    f.write(run("sar -d 1 3")) 
+
+  
+
+print(f"Report generated: {report_file}") 
+ 
+............................................. 
+ 
+ 
+
  
