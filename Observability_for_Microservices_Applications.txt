@@ -1,6 +1,6 @@
 Infrastructure Monitoring using Prometheus and Grafana on AWS
 
-Follow below steps to implement the micro service observability tech stack.
+Follow below steps to implement the application observability tech stack.
 
 Set up a Sample Microservices Application(Deploy a demo app with multiple services (e.g., Banking App with balance-service, payment-service)
 Enable Logging (Structured + Centralized)(NodeExporter + Prom + Grafana.)
