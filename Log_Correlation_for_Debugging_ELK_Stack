@@ -165,17 +165,18 @@ resource "aws_instance" "app_node" {
     # Configure Filebeat
     echo '
     filebeat.inputs:
-      - type: log
+      - type: filestream
+        id: sample-app
         enabled: true
         paths:
           - /var/log/sample_app.log
 
        # Capture system logs
-      - type: log
+      - type: filestream
+        id: system-logs
         enabled: true
         paths:
           - /var/log/syslog  # Ubuntu system logs
-          - /var/log/messages # Amazon Linux system logs
 
     output.logstash:
       hosts: ["${aws_instance.elk_node.private_ip}:5044"]
