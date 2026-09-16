@@ -100,8 +100,9 @@ resource "aws_instance" "elk_node" {
     sudo apt install -y openjdk-11-jre curl
 
     # Install Elasticsearch
-    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-    echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+    sudo apt install -y apt-transport-https wget gnupg
+    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/9.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-9.x.list
     sudo apt update -y && sudo apt install -y elasticsearch
 
     # Configure Elasticsearch
