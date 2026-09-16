@@ -88,7 +88,7 @@ resource "aws_security_group" "elk_sg" {
 
 resource "aws_instance" "elk_node" {
   ami           = "ami-0cb91c7de36eed2cb" # Ubuntu AMI
-  instance_type = "t2.medium"
+  instance_type = "t3.medium"
   key_name      = "elk"  # change as per your key
   security_groups = [aws_security_group.elk_sg.name]
   tags = {
