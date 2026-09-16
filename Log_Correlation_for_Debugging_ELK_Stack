@@ -91,6 +91,10 @@ resource "aws_instance" "elk_node" {
   instance_type = "t3.medium"
   key_name      = "elk"  # change as per your key
   security_groups = [aws_security_group.elk_sg.name]
+  root_block_device {
+    volume_size = 32
+    volume_type = "gp3"
+  }
   tags = {
     Name = "elk-node"
   }
