@@ -304,7 +304,7 @@ kubectl delete crds --selector=app.kubernetes.io/name=prometheus-operator
 
 kubectl get pods -n monitoring
 kubectl get prometheusrules -n monitoring
-kubectl logs -l app.kubernetes.io/name=prometheus-operator -n monitoring
+kubectl logs -l app.kubernetes.io/name=kube-prometheus-stack-prometheus-operator -n monitoring
 
 
 >>>>>>> Verify CRDs are Installed
